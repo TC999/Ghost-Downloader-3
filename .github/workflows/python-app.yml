@@ -31,7 +31,7 @@ jobs:
         pip install -r requirements.txt -U pyinstaller
     - name: 编译
       run: |
-        pyinstaller -F -w -i=images\logo.ico main.py
+        pyinstaller -F -w -i images\logo.ico main.py
     - name: 添加插件
       run: move plugins dist\main\plugins
     - name: 打包
