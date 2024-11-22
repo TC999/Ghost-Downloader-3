@@ -1,0 +1,42 @@
+name: Linux Build
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        arch: [x86_64, arm64, x64, x86]
+
+    steps:
+    - name: 仓库检出
+      uses: actions/checkout@v4
+    - name: 设置 Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt -U pyinstaller
+    - name: 编译
+      run: |
+        pyinstaller main.py
+    - name: 添加插件
+      run: mv plugins dist/main/
+      continue-on-error: true
+    - name: 打包
+      run: tar -cf Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip dist/main/
+    - name: 上传文件
+      uses: actions/upload-artifact@v3
+      with:
+        name: Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip
+        path: |
+          Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip
