@@ -33,12 +33,13 @@ jobs:
       run: |
         pyinstaller -F -w -i images\logo.ico main.py
     - name: 添加插件
-      run: move plugins dist\main\plugins
+      run: move plugins dist/main/plugins
+      continue-on-error: true
     - name: 打包
-      run: tar -cf dist\Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip dist\main
+      run: tar -cf dist/Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip dist/main
     - name: 上传文件
       uses: actions/upload-artifact@v3
       with:
         name: Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip
         path: |
-          dist\Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip
+          dist/Ghost-Downloader-${{ matrix.os }}-${{ matrix.arch }}-PyInstaller.zip
